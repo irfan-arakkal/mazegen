@@ -18,3 +18,7 @@ class Config:
         self.outputfile = outputfile
         self.perfect = perfect
         self.seed = seed
+
+        
+class ConfigError(Exception):
+      """Raised when the configuration file is invalid."""
