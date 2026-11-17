@@ -64,9 +64,24 @@ def parse_bool(key: str, text: str) -> bool:
         return False
     raise ConfigError(f"{key} must be True or False, got '{text}'")
 
-def parse_int(key:str , text:str):
+
+def parse_int(key: str, text: str):
 
     try:
         return int(text)
     except ValueError:
-        raise ConfigError(f"{key} must be  whole numbers , got '{text}'") from None
+        raise ConfigError(
+            f"{key} must be  whole numbers , got '{text}'"
+        ) from None
+
+
+def parse_coor(key: str, text: str) -> tuple[int, int]:
+
+    parts = text.split(",")
+
+    if len(parts) != 2:
+        raise ConfigError(f"{key} must look like x,y, got '{text}'")
+    x = parse_int(key, parts[0])
+    y = parse_int(key, parts[1])
+
+    return (x, y)
