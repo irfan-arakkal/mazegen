@@ -63,3 +63,10 @@ def parse_bool(key: str, text: str) -> bool:
     if text == "False":
         return False
     raise ConfigError(f"{key} must be True or False, got '{text}'")
+
+def parse_int(key:str , text:str):
+
+    try:
+        return int(text)
+    except ValueError:
+        raise ConfigError(f"{key} must be  whole numbers , got '{text}'") from None
