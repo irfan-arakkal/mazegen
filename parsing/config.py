@@ -54,3 +54,12 @@ def read_config_file(path: str) -> dict[str, str]:
         values[key] = value
 
     return values
+
+
+def parse_bool(key: str, text: str) -> bool:
+    """Convert 'True' or 'False' text into a bool."""
+    if text == "True":
+        return True
+    if text == "False":
+        return False
+    raise ConfigError(f"{key} must be True or False, got '{text}'")
