@@ -65,7 +65,7 @@ def parse_bool(key: str, text: str) -> bool:
     raise ConfigError(f"{key} must be True or False, got '{text}'")
 
 
-def parse_int(key: str, text: str):
+def parse_int(key: str, text: str) -> int:
 
     try:
         return int(text)
