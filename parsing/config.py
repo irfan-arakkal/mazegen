@@ -1,3 +1,6 @@
+REQUIRED_KEYS = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"]
+
+
 class Config:
     """Holds all values read from the configuration file."""
 
@@ -97,3 +100,37 @@ def check_inside(
             f"{key} {x},{y} is outside the maze "
             f"(x must be 0-{width - 1}, y must be 0-{height - 1})"
         )
+
+
+def parse_config(path: str) -> Config:
+    """Read and validate the config file, returning a Config object."""
+    values = read_config_file(path)
+
+    for key in REQUIRED_KEYS:
+        if key not in values:
+            raise ConfigError(f"Missing mandatory key: {key}")
+        if values[key] == "":
+            raise ConfigError(f"{key} has no value")
+
+    width = parse_int("WIDTH", values["WIDTH"])
+    height = parse_int("HEIGHT", values["HEIGHT"])
+    if width <= 0 or height <= 0:
+        raise ConfigError("WIDTH and HEIGHT must be greater than 0")
+
+    entry_pos = parse_coor("ENTRY", values["ENTRY"])
+    exit_pos = parse_coor("EXIT", values["EXIT"])
+    check_inside("ENTRY", entry_pos, width, height)
+    check_inside("EXIT", exit_pos, width, height)
+    if entry_pos == exit_pos:
+        raise ConfigError("ENTRY and EXIT must be different")
+
+    outputfile = values["OUTPUT_FILE"]
+    perfect = parse_bool("PERFECT", values["PERFECT"])
+
+    seed: int | None = None
+    if "SEED" in values:
+        seed = parse_int("SEED", values["SEED"])
+
+    return Config(
+        width, height, entry_pos, exit_pos, outputfile, perfect, seed
+    )
