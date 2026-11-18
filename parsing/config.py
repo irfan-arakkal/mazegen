@@ -66,17 +66,17 @@ def parse_bool(key: str, text: str) -> bool:
 
 
 def parse_int(key: str, text: str) -> int:
-
+    """Convert text into an int, raising ConfigError if it is not one."""
     try:
         return int(text)
     except ValueError:
         raise ConfigError(
-            f"{key} must be  whole numbers , got '{text}'"
+            f"{key} must be a whole number, got '{text}'"
         ) from None
 
 
 def parse_coor(key: str, text: str) -> tuple[int, int]:
-
+    """Convert 'x,y' text into an (x, y) tuple of ints."""
     parts = text.split(",")
 
     if len(parts) != 2:
@@ -85,3 +85,15 @@ def parse_coor(key: str, text: str) -> tuple[int, int]:
     y = parse_int(key, parts[1])
 
     return (x, y)
+
+
+def check_inside(
+    key: str, position: tuple[int, int], width: int, height: int
+) -> None:
+    """Raise ConfigError if position is outside a width x height maze."""
+    x, y = position
+    if x < 0 or x >= width or y < 0 or y >= height:
+        raise ConfigError(
+            f"{key} {x},{y} is outside the maze "
+            f"(x must be 0-{width - 1}, y must be 0-{height - 1})"
+        )
