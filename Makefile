@@ -22,4 +22,4 @@ lint-strict:
 	flake8 . --exclude=.venv
 	mypy . --strict
 
-.PHONY: install run debug clean lint lint-stricts
+.PHONY: install run debug clean lint lint-strict
