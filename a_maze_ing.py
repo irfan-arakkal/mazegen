@@ -2,7 +2,7 @@
 
 import sys
 
-from parsing.config import ConfigError, parse_config
+from maze_app.config import ConfigError, parse_config
 
 
 def main() -> None:
